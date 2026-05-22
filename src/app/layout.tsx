@@ -14,7 +14,10 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: "Voice",
+  title: {
+    default: "Pulse",
+    template: "%s | Pulse"
+  },
   description: "Voice lab powered by AI",
 };
 

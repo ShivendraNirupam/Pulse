@@ -23,7 +23,7 @@ export function QuickActionCard({
             </div>
 
             {/* Content */}
-            <div className="flex flex-col justify-between" py-1>
+            <div className="flex flex-col justify-between py-1">
                 <div className="space-y-1">
                     <h3 className="text-sm font-medium">
                         {title}

@@ -134,7 +134,7 @@ export function DashBoardSidebar() {
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader className="flex flex-col gap-4 pt-4">
-        <div className="flex items-center gap-2 pl-1 border-2 border-black/50 rounded-2xl bg-black/30 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:pl-0">
+        <div className="flex items-center gap-2 pl-1 border-2 border-black/20 rounded-2xl bg-gray-300/20 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:pl-0">
           <div className="w-full flex flex-col items-center justify-center">
             <Image
               src={"/logo.png"}
