@@ -5,18 +5,19 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "sonner";
 import { ClerkProvider } from "@clerk/nextjs";
+import { TRPCReactProvider } from "@/trpc/routers/client";
 
-const figtree = Figtree({subsets:['latin'],variable:'--font-sans'});
+const figtree = Figtree({ subsets: ["latin"], variable: "--font-sans" });
 
 const inter = Inter({
   variable: "--font-inter",
-  subsets: ["latin"]
-})
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   title: {
     default: "Pulse",
-    template: "%s | Pulse"
+    template: "%s | Pulse",
   },
   description: "Voice lab powered by AI",
 };
@@ -28,15 +29,15 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en" className={cn("font-sans", figtree.variable)}>
-      <body
-        className={`${inter.variable} font-sans antialiased`}
-      >
-        {children}
+      <TRPCReactProvider>
+        <html lang="en" className={cn("font-sans", figtree.variable)}>
+          <body className={`${inter.variable} font-sans antialiased`}>
+            {children}
 
-        <Toaster />
-      </body>
-    </html>
+            <Toaster />
+          </body>
+        </html>
+      </TRPCReactProvider>
     </ClerkProvider>
   );
 }
