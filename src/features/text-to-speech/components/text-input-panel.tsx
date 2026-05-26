@@ -24,7 +24,7 @@ export function TextInputPanel() {
               value={field.state.value}
               onChange={(e) => field.handleChange(e.target.value)}
               placeholder="Start typing or paste your text here"
-              className="absolute inset-0 resize-none border-0 bg-transparent p-4 pb-6  lg:p-6 lg:pb-8 text-base! leading-relaxed shadow-none wrap-break-word focus-visible:ring-0"
+              className="absolute inset-0 resize-none border-0 bg-transparent p-4 pb-6  lg:p-6 lg:pb-8 text-base! leading-relaxed shadow-none break-word focus-visible:ring-0"
               maxLength={TEXT_MAX_LENGTH}
               disabled={isSubmitting}
             />
