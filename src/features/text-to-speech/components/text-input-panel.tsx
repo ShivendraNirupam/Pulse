@@ -8,6 +8,10 @@ import { Badge } from "@/components/ui/badge";
 import { Coins } from "lucide-react";
 import { ttsFormOptions } from "./text-to-speech-form";
 import { GenerateButton } from "./generate-button";
+import { SettingDrawer } from "./settings-drawer";
+import { VoiceSelectorButton } from "./voice-selector-mobile-button";
+import { HistoryDrawer } from "./history-drawer";
+import { PromptSuggestions } from "./prompt-suggestion";
 
 export function TextInputPanel() {
   const form = useTypedAppFormContext(ttsFormOptions);
@@ -38,6 +42,12 @@ export function TextInputPanel() {
       <div className="shrink-0 p-4 lg:p-6">
         {/* Mobile Layout */}
         <div className="flex flex-col gap-3 lg:hidden">
+          <div className="flex items-center gap-2">
+            <SettingDrawer>
+              <VoiceSelectorButton />
+            </SettingDrawer>
+            <HistoryDrawer />
+          </div>
           <GenerateButton
             className="w-full"
             disabled={isSubmitting}
@@ -75,9 +85,9 @@ export function TextInputPanel() {
           </div>
         ) : (
           <div className="hidden lg:block">
-            <p className="text-sm text-muted-foreground">
-              Get started by typing or pasting text above
-            </p>
+            <PromptSuggestions
+              onSelect={(prompt) => form.setFieldValue("text", prompt)}
+            />
           </div>
         )}
       </div>
