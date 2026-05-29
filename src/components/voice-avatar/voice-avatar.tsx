@@ -28,7 +28,7 @@ export function VoiceAvatar({
         >
             <AvatarImage src={avatarUrl} alt={name}/>
             <AvatarFallback className="text-[8px]">
-                {name.slice(0, 2).toUpperCase()}
+                {name?.slice(0, 2).toUpperCase()}
             </AvatarFallback>
         </Avatar>
     )

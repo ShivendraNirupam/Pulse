@@ -12,7 +12,9 @@ export default async function TextToSpeech({
   searchParams: Promise<{ text?: string; voiceId?: string }>;
 }) {
   const { text, voiceId } = await searchParams;
-  await prefetch(trpc.voices.getAll.queryOptions());
+
+  prefetch(trpc.voices.getAll.queryOptions());
+  prefetch(trpc.generations.getAll.queryOptions()); 
 
   return (
     <HydrateClient>
