@@ -1,0 +1,139 @@
+"use client"
+
+import { useRef, useState } from "react";
+import { Pause, Play, Download, Redo, Undo, Loader2 } from "lucide-react";
+import { format } from "date-fns"
+import { VoiceAvatar } from "@/components/voice-avatar/voice-avatar";
+import { Button } from "@/components/ui/button";
+import { useWaveSurfer } from "../hooks/use-wavesurfer";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
+
+type VoicePreviewPanel = {
+    id?: string,
+    name: string,
+};
+
+function formatTime(seconds: number): string {
+    return format(new Date(seconds * 1000), "mm:ss");
+}
+
+export function VoicePreviewPanel({
+    audioUrl,
+    voice,
+    text
+} : {
+    audioUrl: string,
+    voice: VoicePreviewPanel | null
+    text: string
+}) {
+    const [isDownloading, setIsDownloading] = useState(false);
+    const selectedVoiceName = voice?.name ?? null;
+    const selectedVoiceSeed = voice?.id ?? null;
+
+   const {
+    containerRef,
+    isPlaying,
+    isReady,
+    currentTime,
+    duration,
+    togglePlayPause,
+    seekForward,
+    seekBackward
+   } = useWaveSurfer({
+    url: audioUrl,
+    autoPlay: true,
+   });
+
+   const handleDownload = () => {
+    setIsDownloading(true);
+
+    const safeName = text.slice(0, 50).trim().replace(/[^a-zA-Z0-9]+/g, "-").replace(/^-|-$/g, "").toLowerCase() || "speech";   
+
+    const link = document.createElement("a");
+    link.href = audioUrl;
+    link.download = `${safeName}.wav`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    setTimeout(() => setIsDownloading(false), 1000);
+   }
+
+    return (
+        <div className="h-full gap-8 flex-col border-t hidden flex-1 lg:flex">
+            <div className="p-6 pb-0">
+                <h3 className="font-semibold text-foreground">Voice Preview</h3>
+            </div>
+
+            <div className="relative flex flex-1 items-center justify-center">
+                {!isReady && (
+                    <div className="absolute inset-0 z-10 flex items-center justify-center">
+                        <Badge variant={"outline"} className="gap-2 bg-background/90 px-3 py-1.5 text-sm text-muted-foreground shadow-sm">
+                            <Loader2 className="animate-spin"/>
+                            <span>Loading audio</span>
+                        </Badge>
+                    </div>
+                )}
+                <div 
+                    ref={containerRef}
+                    className={cn("w-full cursor-pointer transition-opacity duration-200", !isReady && "opacity-0")}
+                />
+            </div>
+
+            <div className="flex items-center justify-center">
+                <p className="text-3xl font-semibold tabular-nums tracking-tight text-foreground">
+                    {formatTime(currentTime)}{" "}
+                    <span className="text-muted-foreground">
+                        {" / "}{formatTime(duration)}
+                    </span>
+                </p>
+            </div>
+
+            <div className="flex flex-col items-center p-6">
+                <div className="grid w-full grid-cols-3">
+                    <div className="flex min-w-0 flex-col gap-0.5">
+                        <p className="truncate text-sm font-medium text-foreground">{text}</p>
+
+                        {selectedVoiceName && (
+                            <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                                <VoiceAvatar 
+                                    seed={selectedVoiceSeed ?? selectedVoiceName}
+                                    name={selectedVoiceName}
+                                    className="shrink-0"
+                                />
+
+                                <span className="truncate">{selectedVoiceName}</span>
+                            </div>
+                        )}
+                    </div>
+
+                    <div className="flex items-center justify-center gap-3">
+                        <Button variant={"ghost"} size={"icon-lg"} className="flex-col" onClick={() => seekBackward(10)} disabled={!isReady}>
+                            <Undo className="size-4 -mb-1"/>
+                            <span className="text-[10px] font-medium">10</span>
+                        </Button>
+                        <Button className="rounded-full" variant={"default"} size={"icon-lg"} onClick={togglePlayPause}>
+                            {isPlaying ? (
+                                <Pause className="fill-background"/>
+                            ) : (
+                                <Play className="fill-background"/>
+                            )}
+                        </Button>
+                        <Button variant={"ghost"} size={"icon-lg"} className="flex-col" onClick={() => seekForward(10)} disabled={!isReady}>
+                            <Redo className="size-4 -mb-1"/>
+                            <span className="text-[10px] font-medium">10</span>
+                        </Button>
+                    </div>
+
+                    <div className="flex justify-end">
+                        <Button variant={"outline"} size={"sm"} onClick={handleDownload} disabled={isDownloading}>
+                            <Download className="size-4" />
+                            Download
+                        </Button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
+}
