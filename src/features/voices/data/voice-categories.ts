@@ -3,7 +3,7 @@ import type { VoiceCategory } from "@/generated/prisma/client";
 export const VOICE_CATEGORY_LABELS: Record<VoiceCategory, string> = {
   AUDIOBOOK: "Audiobook",
   CONVERSATIONAL: "Conversational",
-  CUSTOMER_SERVICE: "Customer Service",
+  CUSTOM_SERVICE: "Customer Service",
   GENERAL: "General",
   NARRATIVE: "Narrative",
   CHARACTERS: "Characters",
