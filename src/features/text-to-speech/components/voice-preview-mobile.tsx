@@ -71,7 +71,13 @@ export function VoicePreviewMobilePanel({
   const handleDownload = () => {
     setIsDownloading(true);
 
-    const safeName = text.slice(0, 50).trim().replace(/[^a-zA-Z0-9]+/g, "-").replace(/^-|-$/g, "").toLowerCase() || "speech";   
+    const safeName =
+      text
+        .slice(0, 50)
+        .trim()
+        .replace(/[^a-zA-Z0-9]+/g, "-")
+        .replace(/^-|-$/g, "")
+        .toLowerCase() || "speech";
 
     const link = document.createElement("a");
     link.href = audioUrl;
@@ -81,8 +87,7 @@ export function VoicePreviewMobilePanel({
     document.body.removeChild(link);
 
     setTimeout(() => setIsDownloading(false), 1000);
-   }
-
+  };
 
   return (
     <div className="border-t p-4 lg:hidden">
@@ -104,9 +109,9 @@ export function VoicePreviewMobilePanel({
         </div>
 
         <div className="flex items-center gap-2">
-            <Button variant={"ghost"} size={"icon"} onClick={handleDownload}>
-                <Download className="size-4"/>
-            </Button>
+          <Button variant={"ghost"} size={"icon"} onClick={handleDownload}>
+            <Download className="size-4" />
+          </Button>
           <Button variant={"default"} size={"icon-lg"} className="rounded-full">
             {isPlaying ? (
               <Pause className="fill-background" />

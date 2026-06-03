@@ -3,7 +3,7 @@ export interface QuickAction {
   description: string;
   gradient: string;
   href: string;
-};
+}
 
 export const quickActions: QuickAction[] = [
   {

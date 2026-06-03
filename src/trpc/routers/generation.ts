@@ -70,50 +70,50 @@ export const generationsRouter = createTRPCRouter({
           OR: [{ variant: "SYSTEM" }, { variant: "CUSTOM", orgId: ctx.orgId }],
         },
         select: {
-            id: true,
-            name: true,
-            r2ObjectKey: true
-        }
+          id: true,
+          name: true,
+          r2ObjectKey: true,
+        },
       });
 
-      if(!voice) {
+      if (!voice) {
         throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Voice not found",
+          code: "NOT_FOUND",
+          message: "Voice not found",
         });
       }
 
-      if(!voice.r2ObjectKey) {
+      if (!voice.r2ObjectKey) {
         throw new TRPCError({
-            code: "PRECONDITION_FAILED",
-            message: "Voice audio not available"
-        })
+          code: "PRECONDITION_FAILED",
+          message: "Voice audio not available",
+        });
       }
 
       const { data, error } = await chatterbox.POST("/generate", {
         body: {
-            prompt: input.text,
-            voice_key: voice.r2ObjectKey,
-            temperature: input.temperature,
-            top_p: input.topP,
-            top_k: input.topK,
-            repetition_penalty: input.repetitionPenalty,
-            norm_loudness: true
+          prompt: input.text,
+          voice_key: voice.r2ObjectKey,
+          temperature: input.temperature,
+          top_p: input.topP,
+          top_k: input.topK,
+          repetition_penalty: input.repetitionPenalty,
+          norm_loudness: true,
         },
         parseAs: "arrayBuffer",
       });
 
-      if(error) {
+      if (error) {
         throw new TRPCError({
-            code: "INTERNAL_SERVER_ERROR",
-            message: "Failed to generate audio",
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to generate audio",
         });
       }
 
-      if(!(data instanceof ArrayBuffer)) {
+      if (!(data instanceof ArrayBuffer)) {
         throw new TRPCError({
-            code: "INTERNAL_SERVER_ERROR",
-            message: "Invalid audio response",
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Invalid audio response",
         });
       }
 
@@ -123,19 +123,19 @@ export const generationsRouter = createTRPCRouter({
 
       try {
         const generation = await prisma.generation.create({
-            data: {
-                orgId: ctx.orgId,
-                text: input.text,
-                voiceName: voice.name,
-                voiceId: voice.id,
-                temperature: input.temperature,
-                topP: input.topP,
-                topK: input.topK,
-                repetitionPenalty: input.repetitionPenalty
-            }, 
-            select: {
-                id: true
-            },
+          data: {
+            orgId: ctx.orgId,
+            text: input.text,
+            voiceName: voice.name,
+            voiceId: voice.id,
+            temperature: input.temperature,
+            topP: input.topP,
+            topK: input.topK,
+            repetitionPenalty: input.repetitionPenalty,
+          },
+          select: {
+            id: true,
+          },
         });
 
         generationId = generation.id;
@@ -144,31 +144,32 @@ export const generationsRouter = createTRPCRouter({
         await uploadAudio({ buffer, key: r2ObjectKey });
 
         await prisma.generation.update({
-            where: {
-                id: generation.id,
-            },
-            data:{
-                r2ObjectKey,
-            }
-        })
+          where: {
+            id: generation.id,
+          },
+          data: {
+            r2ObjectKey,
+          },
+        });
       } catch (error) {
-        if(generationId) {
-            await prisma.generation.delete({
-                where: {
-                    id: generationId,
-                }
+        if (generationId) {
+          await prisma.generation
+            .delete({
+              where: {
+                id: generationId,
+              },
             })
             .catch(() => {});
         }
 
         throw new TRPCError({
-            code: "INTERNAL_SERVER_ERROR",
-            message: "Failed to store generated audio",
-        })
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to store generated audio",
+        });
       }
 
       return {
-        id: generationId
+        id: generationId,
       };
     }),
 });
