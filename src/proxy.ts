@@ -6,35 +6,35 @@ const isPublicRoute = createRouteMatcher(["/sign-in(.*)", "/sign-up(.*)"]);
 const isOrgSelectionRoute = createRouteMatcher(["/org-selection(.*)"]);
 
 export default clerkMiddleware(async (auth, req) => {
-    const { userId, orgId } = await auth();
+  const { userId, orgId } = await auth();
 
-    if(isPublicRoute(req)) {
-        return NextResponse.next();
-    }
-
-    if(!userId) {
-        await auth.protect();
-    }
-
-    if(isOrgSelectionRoute(req)) {
-        return NextResponse.next();
-    } 
-
-    if(userId && !orgId) {
-        const orgSelection = new URL("/org-selection", req.url);
-        return NextResponse.redirect(orgSelection);
-    }
-
+  if (isPublicRoute(req)) {
     return NextResponse.next();
+  }
+
+  if (!userId) {
+    await auth.protect();
+  }
+
+  if (isOrgSelectionRoute(req)) {
+    return NextResponse.next();
+  }
+
+  if (userId && !orgId) {
+    const orgSelection = new URL("/org-selection", req.url);
+    return NextResponse.redirect(orgSelection);
+  }
+
+  return NextResponse.next();
 });
 
 export const config = {
-    matcher: [
+  matcher: [
     // Skip Next.js internals and all static files, unless found in search params
-    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
+    "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
     // Always run for Clerk's auto-proxy path
-    '/__clerk/(.*)',
+    "/__clerk/(.*)",
     // Always run for API routes
-    '/(api|trpc)(.*)',
+    "/(api|trpc)(.*)",
   ],
-}
+};

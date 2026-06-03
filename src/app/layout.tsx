@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Figtree, Inter } from "next/font/google";
 // @ts-ignore: side-effect CSS import declaration missing in TS config
 import "./globals.css";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { cn } from "@/lib/utils";
 import { Toaster } from "sonner";
 import { ClerkProvider } from "@clerk/nextjs";
@@ -32,7 +33,10 @@ export default function RootLayout({
       <TRPCReactProvider>
         <html lang="en" className={cn("font-sans", figtree.variable)}>
           <body className={`${inter.variable} font-sans antialiased`}>
-            {children}
+
+            <NuqsAdapter>
+              {children}
+            </NuqsAdapter>
 
             <Toaster />
           </body>

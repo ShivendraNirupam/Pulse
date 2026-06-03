@@ -39,29 +39,33 @@ export function SettingsPanelHistory() {
 
   return (
     <div className="flex flex-col gap-1 p-2">
-        {generations.map((generation) => (
-            <Link
-                href={`/text-to-speech/${generation.id}`}
-                key={generation.id}
-                className="flex items-center gap-3 rounded-lg p-3 text-left transition-colors hover:bg-muted"
-            >
-                <div className="flex min-w-0 flex-1 flex-col gap-0.5">
-                    <p className="truncate text-sm font-medium text-foreground">
-                        {generation.text}
-                    </p>
-                    <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                        <VoiceAvatar 
-                            seed={generation.voiceId ?? generation.voiceName}
-                            name={generation.voiceName}
-                            className="shrink-0"
-                        />
-                        <span>{generation.voiceName}</span>
-                        <span> : </span>
-                        <span>{formatDistanceToNow(new Date(generation.createdAt), {addSuffix: true})}</span>
-                    </div>
-                </div>
-            </Link>
-        ))}
+      {generations.map((generation) => (
+        <Link
+          href={`/text-to-speech/${generation.id}`}
+          key={generation.id}
+          className="flex items-center gap-3 rounded-lg p-3 text-left transition-colors hover:bg-muted"
+        >
+          <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+            <p className="truncate text-sm font-medium text-foreground">
+              {generation.text}
+            </p>
+            <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+              <VoiceAvatar
+                seed={generation.voiceId ?? generation.voiceName}
+                name={generation.voiceName}
+                className="shrink-0"
+              />
+              <span>{generation.voiceName}</span>
+              <span> : </span>
+              <span>
+                {formatDistanceToNow(new Date(generation.createdAt), {
+                  addSuffix: true,
+                })}
+              </span>
+            </div>
+          </div>
+        </Link>
+      ))}
     </div>
-  )
+  );
 }

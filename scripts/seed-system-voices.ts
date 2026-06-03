@@ -261,7 +261,7 @@ async function seedSystemVoice(name: string) {
 
     throw error;
   }
-};
+}
 
 async function main() {
   console.log(

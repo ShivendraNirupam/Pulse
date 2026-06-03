@@ -37,20 +37,20 @@ export function TextToSpeechView({
   const defaultValues: TTSFormValues = {
     ...defaultTTSValues,
     ...initialValues,
-    voiceId: resolvedVoiceId
-  }
+    voiceId: resolvedVoiceId,
+  };
 
   return (
     <TTSVoiceProvider value={{ customVoices, systemVoices, allVoices }}>
       <TextToSpeechForm defaultValues={defaultValues}>
-      <div className="flex min-h-0 flex-1 overflow-hidden">
-        <div className="flex min-h-0 flex-1 flex-col">
-          <TextInputPanel />
-          <VoicePreviewPlaceholder />
+        <div className="flex min-h-0 flex-1 overflow-hidden">
+          <div className="flex min-h-0 flex-1 flex-col">
+            <TextInputPanel />
+            <VoicePreviewPlaceholder />
+          </div>
+          <SettingPanel />
         </div>
-        <SettingPanel />
-      </div>
-    </TextToSpeechForm>
+      </TextToSpeechForm>
     </TTSVoiceProvider>
   );
 }

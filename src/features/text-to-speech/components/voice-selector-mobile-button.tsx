@@ -22,22 +22,24 @@ export function VoiceSelectorButton() {
 
   return (
     <DrawerTrigger asChild>
-        <Button
-            variant={"outline"}
-            size={"sm"}
-            className="flex-1 justify-start gap-2 px-2"
-        >
-            {currentVoice && (
-                <VoiceAvatar 
-                    seed={currentVoice.id}
-                    name={currentVoice.name}
-                    className="size-6"
-                />
-            )}
+      <Button
+        variant={"outline"}
+        size={"sm"}
+        className="flex-1 justify-start gap-2 px-2"
+      >
+        {currentVoice && (
+          <VoiceAvatar
+            seed={currentVoice.id}
+            name={currentVoice.name}
+            className="size-6"
+          />
+        )}
 
-            <span className="flex-1 truncate text-left text-sm font-medium">{buttonLabel}</span>
-            <ChevronDown className="size-4 shrink-0 text-muted-foreground"/>
-        </Button>
+        <span className="flex-1 truncate text-left text-sm font-medium">
+          {buttonLabel}
+        </span>
+        <ChevronDown className="size-4 shrink-0 text-muted-foreground" />
+      </Button>
     </DrawerTrigger>
-  )
+  );
 }

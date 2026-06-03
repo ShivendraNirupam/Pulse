@@ -78,7 +78,7 @@ export const WavyBackground = ({
       ctx.strokeStyle = waveColors[i % waveColors.length];
       for (x = 0; x < w; x += 5) {
         var y = noise(x / 800, 0.3 * i, nt) * 100;
-        ctx.lineTo(x, y + waveYOffset ); 
+        ctx.lineTo(x, y + waveYOffset);
       }
       ctx.stroke();
       ctx.closePath();
@@ -107,7 +107,7 @@ export const WavyBackground = ({
     setIsSafari(
       typeof window !== "undefined" &&
         navigator.userAgent.includes("Safari") &&
-        !navigator.userAgent.includes("Chrome")
+        !navigator.userAgent.includes("Chrome"),
     );
   }, []);
 
@@ -115,7 +115,7 @@ export const WavyBackground = ({
     <div
       className={cn(
         "h-screen flex flex-col items-center justify-center",
-        containerClassName
+        containerClassName,
       )}
     >
       <canvas
